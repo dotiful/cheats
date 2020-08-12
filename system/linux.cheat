@@ -1,0 +1,45 @@
+% linux
+
+# identify video card
+lspci | grep -e VGA -e 3D
+
+# list USB devices
+lsusb
+
+# copy output to clipboard
+xclip -se c
+
+# paste clipboard content
+xclip -out -selection clipboard
+
+# pgrep
+pgrep -x <process> >/dev/null && echo "Process found" || echo "Process not found"  ###################
+
+# pidof
+pidof <process> >/dev/null && echo "Service is running" || echo "Service NOT running"
+
+# ps
+ps -C <process> >/dev/null && echo "Running" || echo "Not running"
+
+# get various settings from the desktop environment
+xdg-settings <xdg-settings>
+
+# get information related to file type
+xdg-mime query filetype <file>
+
+# get the default app for a  mimetype
+xdg-mime query default <mime>
+
+# changing the default application for the MIME type
+xdg-mime default <app> <mime>
+
+# opening a file with your standard application
+xdg-open <file>
+
+# shortcut to open all web MIME types with one application
+xdg-settings set default-web-browser firefox.desktop
+
+# shortcut to install default app for URL scheme
+xdg-settings set default-url-scheme-handler irc <app>
+
+$ xdg-settings: echo "--list get check set" | tr ' ' '\n'

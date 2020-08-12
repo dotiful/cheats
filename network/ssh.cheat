@@ -1,0 +1,27 @@
+% ssh
+
+# Access via ssh
+ssh <username-remote>
+
+# Copy file from server to local
+scp <username-remote>:<file-to-send-path> <path-to-recieve>
+
+# Copy file from local to server
+scp <file-to-send> <username-remote>:<where-to-put>
+
+# Generating a new SSH key
+ssh-keygen -t rsa -b 4096 -C <email> -f ~/.ssh/<keyfile>
+
+# Adding your SSH key to the ssh-agent
+eval "$(ssh-agent -s)"; ssh-add
+
+# Copies the contents of the public key
+xclip -sel clip < ~/.ssh/<public_key>
+
+# copy public key
+ssh-copy-id -i ~/.ssh/<public_key>
+
+# add all private keys in ~/.ssh directory
+grep -slR "PRIVATE" ~/.ssh/ | xargs ssh-add
+
+$ public_key: /bin/ls -1 ~/.ssh/*.pub | awk -F"/" '{print $NF}'

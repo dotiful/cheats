@@ -1,0 +1,63 @@
+% fs
+
+# Show disc space
+df -h
+
+# Show disc space (inodes)
+df -i
+
+# Show disc space for current directory
+du -hs
+
+# deleting windows hibernate metadata
+mount -t ntfs-3g -o remove_hiberfile /dev/<NTFS_partition> /mnt
+
+; # If you select "hello" for <x>, the possible values of <y> will be "hello foo" and "hello bar"
+; echo <x> <y>
+
+; $ x: echo "hello hi" | tr ' ' '\n'
+; $ y: echo "$x foo;$x bar" | tr ';' '\n'
+
+% sh files
+
+# Make (empty) file
+touch <filename-txt>
+
+# Duplicate file
+cp <filename> <file-copyname>
+
+# Copy/Page folder with content
+cp -a <old-folder>/ <new-folder>
+
+# Move/Rename file
+mv <current-filename-path> <new-filename-path>
+
+# Move/Rename file and prompt before overwriting an existing file
+mv -i <current-filename> <new-filename>
+
+# Remove file
+rm <filename-txt>
+
+# Write to file (will overwrite existing content)
+cat > <filename-txt>
+
+# Search for a filename-(not content!) in the current directory
+find <filename-txt>
+
+# Search for a string inside all files in the current directory and subdrectories
+grep -r <string> *
+
+# Search and replace within file
+sed -i s/<original-text>/<new-text>/g <filename-txt>
+
+# MD5 hash for files
+md5 <filename-txt>
+
+# MD5 hash for folders
+tar c <folder> | md5sum
+
+# Encrypt file
+openssl enc -aes-256-cbc -e -in <sample-filename-txt> -out <sample-encrypted-txt>
+
+# Decrypt file
+openssl enc -aes-256-cbc -d -in <sample-encrypted> -out <sample-filename>

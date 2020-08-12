@@ -1,0 +1,7 @@
+% media
+
+# Download best mp4 format available or any other best if no mp4 available
+youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -o "~/Videos/youtube/%(title)s.%(ext)s"
+
+# Extract audio
+youtube-dl -x --embed-thumbnail --audio-format mp3 -o "~/Music/wsd/%(title)s.%(ext)s"

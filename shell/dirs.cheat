@@ -1,0 +1,48 @@
+% sh dirs
+
+# Get the current path
+pwd
+
+# Change directory
+cd <dirname>
+
+# Go back to previous directory
+cd -
+
+# List directory contents
+ls
+
+# List all directory contents
+ll
+
+# List all directory contents sorted by time edited
+ls -alt
+
+# List directory (wildcard matching)
+ls *.<txt>
+
+# List all files of type
+find . -name *.<txt> -print
+
+# Make (empty) directory
+mkdir <dirname>
+
+# Remove (empty) directory
+rmdir <dirname>
+
+# Remove directory with all contents without prompt
+rm -rf <dirname>
+
+# Remove directory contents and keep directory
+rm -rf *
+
+% sh links
+
+# Create symlink
+ln -s <source-dirname> <destination-dirname>
+
+# Update symlink
+ln -sfn <source-dirname> <destination-dirname>
+
+# Remove symlink
+unlink <sample-dirname>

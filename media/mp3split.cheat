@@ -1,0 +1,4 @@
+% media
+
+# Split mp3 Files With mp3splt
+mp3splt -a -t 5.0 -o Lesson_01-@n -d Lesson_01 Lesson_01.mp3

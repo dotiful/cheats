@@ -1,0 +1,12 @@
+% sh vars
+
+# Register variable
+export <TESTING>=<Variable-text>
+
+# Echo variable
+echo $<Variable>
+
+# Unset variable
+unset <Variable>
+
+$ Variable: compgen -e | fzf -e --no-preview

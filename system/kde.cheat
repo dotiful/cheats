@@ -1,0 +1,60 @@
+% kde
+
+; # kde read config
+; # kreadconfig5 --file konsolerc --group "Desktop Entry" --key DefaultProfile
+
+; # kde write config
+; # kwriteconfig5 --file konsolerc --group "Desktop Entry" --key DefaultProfile
+
+# Restarting the KDE desktop
+kquitapp5 plasmashell && kstart5 plasmashell || pkill -ABRT plasmashell
+
+# Rebuilds the KService desktop file system configuration cache
+kbuildsycoca5
+
+# Reload Global Shortcuts config
+kquitapp5 kglobalaccel && sleep 2s && kglobalaccel5 & >/dev/null 2>&1
+
+# Restarting the KWin
+killall kwin_x11 && kwin_x11 --replace & >/dev/null 2>&1
+
+# Hide/Show titlebars when maximized
+kwriteconfig5 --file ~/.config/kwinrc --group Windows --key BorderlessMaximizedWindows <kwin_borderless> \
+  && qdbus org.kde.KWin /KWin reconfigure
+
+# Getting current state of KWin for support and debug purposes
+qdbus org.kde.KWin /KWin supportInformation | bat -l rst
+
+# Set Kvantum theme
+kvantummanager --set <kvantum-themes>
+
+# Change Plasma Icon Theme
+/usr/lib/plasma-changeicons <icons_list>
+
+$ kwin_borderless: $(kreadconfig5 --file ~/.config/kwinrc --group Windows --key BorderlessMaximizedWindows) && echo "false" || echo "true"
+$ icons_list: /bin/ls -1 -d {/usr/share/icons,~/.local/share/icons}/*/ | sed 's/.$//' | awk -F"/" '{print $NF}'
+$ kvantum-themes: /bin/ls -1 -d {/usr/share/Kvantum,~/.config/Kvantum}/*/ | sed 's/.$//' | awk -F"/" '{print $NF}' --- --preview '(bat -pp --color=always {} || exa --group-directories-first --color=always -TL2 {}) 2>/dev/null | head -200' --preview-window right:50%
+
+
+# tell kdesu to use sudo instead of su
+kwriteconfig5 --file kdesurc --group super-user-command --key super-user-command sudo
+
+# list of currently active widgets/panels
+qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.dumpCurrentLayoutJS
+
+# open interactive scripting dialog
+qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.showInteractiveConsole
+
+# sync KDE places (folder bookmarks) to GTK 3
+awk -F\" '/<bookmark href=\"file/ {print $2}' < $HOME/.local/share/user-places.xbel > $HOME/.config/gtk-3.0/bookmarks
+
+; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = 32 - p.height;"
+; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[1]); if (p.height > 0) {p.height = p.height * -1;}";
+; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); if (p.hiding == 'autohide') {p.height = p.height * -1;}";
+; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "print (panelById(panelIds[0]).hiding)"
+; p = panelById(panelIds[0]); p.hiding = 'autohide';
+; p = panelById(panelIds[0]); p.hiding = 'none';
+
+; xclip -o -selection clipboard | sed 's/^file:\/\///' | xclip -selection clipboard
+; xclip -o -selection clipboard | sed -r "s/^file:\/\/(.*)/'\1'/" | xvkbd -xsendevent -file - 2>/dev/null
+; bash -c 'xclip -o -selection clipboard | sed -r "s/^file:\/\/(.*)/'"'"'\1'"'"'/" | tee >( xvkbd -xsendevent -file - 2>/dev/null ) | xclip -selection clipboard'

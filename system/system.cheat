@@ -1,0 +1,26 @@
+% sh sys
+
+# Get the current hostname
+hostname
+
+# Get the current users
+users
+
+# Show calendar
+cal
+
+# Show today's date
+date
+
+# Exit terminal
+exit
+
+# Current processes (also CPS usage)
+top or htop
+
+# Show running php processes
+ps aux | grep php
+
+# Monitor error log (stream as file grows)
+tail error.log -f -n 0
+

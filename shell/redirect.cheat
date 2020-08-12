@@ -1,0 +1,21 @@
+% sh redirects
+
+# Write to file
+echo <Hello> > <hello-txt>
+
+# Append content from a file to another file
+cat <file1-txt> >> <file2-txt>
+
+# Add the amount of lines, words, and characters to <file2-txt>
+cat <file1-txt> | <word-count> | cat > <file2-txt>
+
+# Sort the content of a file (like cat)
+sort <hello-txt>
+
+# Save to sorted content to a new file
+cat <file1-txt> | sort > <sorted-file1-txt>
+
+# Sort and remove duplicates and save to a new file
+sort <file1-txt> | uniq > <uniq-file1-txt>
+
+# redirects the output to /dev/null. Include both the stderr(2) and stdout(1)

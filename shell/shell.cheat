@@ -1,0 +1,51 @@
+% sh strings
+
+# converts upper to lower case
+;tr '[:upper:]' '[:lower:]'
+sed 's/./\L&/g'
+
+# converts lower to upper case
+;tr '[:lower:]' '[:upper:]'
+sed 's/./\L&/g'
+
+# remove characters from a string/variable using tr
+echo "2.3.3" | tr -d .
+
+# remove characters from a string/variable using sed
+echo "2.3.3" | sed 's/\.//g'
+
+
+% sh usage
+
+# change default shell to ZSH/Bash
+grep -q $(which <chsh>) /etc/shells || echo $(which <chsh>) | sudo tee -a /etc/shells && chsh -s $(which <chsh>)
+$ chsh: echo -e "bash\nzsh"
+
+# Re-call last input with sudo
+sudo !!
+
+# Help
+help cd / help dir (...)
+
+# Finding Help
+apropos directory / apropos search (...)
+
+# Define custom startup screen
+sudo nano /etc/motd
+
+# Run a script as background process
+<process> &
+
+#List all running processes
+ps -A
+
+# Kill a running process
+killall <Process-name>
+
+% sh permissions
+
+# Use -R option to change permissions recursively.
+ps -ef | grep apache | grep -v grep
+
+# Change group
+chgrp <group-name-from> <group-name-to>

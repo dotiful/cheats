@@ -1,0 +1,4 @@
+% rust
+
+# fix error: no default toolchain configured
+rustup install stable && rustup default stable
