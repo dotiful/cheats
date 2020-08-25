@@ -12,6 +12,9 @@ du -hs
 # deleting windows hibernate metadata
 mount -t ntfs-3g -o remove_hiberfile /dev/<NTFS_partition> /mnt
 
+# fix damaged ntfs filesystems
+sudo ntfsfix /dev/<NTFS_partition>
+
 ; # If you select "hello" for <x>, the possible values of <y> will be "hello foo" and "hello bar"
 ; echo <x> <y>
 

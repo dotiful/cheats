@@ -48,6 +48,9 @@ qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.showInteractiveConsol
 # sync KDE places (folder bookmarks) to GTK 3
 awk -F\" '/<bookmark href=\"file/ {print $2}' < $HOME/.local/share/user-places.xbel > $HOME/.config/gtk-3.0/bookmarks
 
+# inhibit screen locking, power off, etc.
+kde-inhibit --screensaver --power sleep 100
+
 ; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = 32 - p.height;"
 ; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[1]); if (p.height > 0) {p.height = p.height * -1;}";
 ; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); if (p.hiding == 'autohide') {p.height = p.height * -1;}";

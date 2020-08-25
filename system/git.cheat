@@ -109,6 +109,10 @@ git checkout -b <new_branch_name>
 # Clone GitHub WiKi
 git clone https://github.com/<repo>.wiki.git
 
+# shrink the .git folder size
+bfg -b 100M && git reflog expire --expire=now --all && git gc --aggressive --prune
+
+
 $ branch: git branch | awk '{print $NF}'
 $ toplevel_directory: git rev-parse --show-toplevel
 $ unstaged_files: git status --untracked-files=no -s --porcelain | awk '{print $NF}' --- --multi true

@@ -1,12 +1,22 @@
 % sh strings
 
-# converts upper to lower case
-;tr '[:upper:]' '[:lower:]'
+# converts string to lower case using tr
+tr '[:upper:]' '[:lower:]'
+# converts string to lower case using sed
 sed 's/./\L&/g'
+# converts string to lower case using bash
+echo ${name,,}
+# converts string to lower case using zsh
+echo ${name:l} || ${(L)name}
 
-# converts lower to upper case
-;tr '[:lower:]' '[:upper:]'
+# converts string to upper case using tr
+tr '[:lower:]' '[:upper:]'
+# converts string to upper case using sed
 sed 's/./\L&/g'
+# converts string to upper case using bash
+echo ${name^^}
+# converts string to upper case using zsh
+echo ${name:u} || ${(U)name}
 
 # remove characters from a string/variable using tr
 echo "2.3.3" | tr -d .
