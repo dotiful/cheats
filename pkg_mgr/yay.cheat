@@ -39,4 +39,4 @@ yay -Qqe > pkglist.txt
 pacman -Quq|xargs expac -S -H M '%k\\t%n' | sort -sh
 
 # removing unused packages (orphans)
-yay -Rns --noconfirm $(pacman -Qtdq)
+yay -Rns --noconfirm $(yay -Qtd)
