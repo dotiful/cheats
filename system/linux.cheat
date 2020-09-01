@@ -7,13 +7,13 @@ lspci | grep -e VGA -e 3D
 lsusb
 
 # copy output to clipboard
-xclip -se c
+xclip -r -se c
 
 # paste clipboard content
 xclip -out -selection clipboard
 
 # pgrep
-pgrep -x <process> >/dev/null && echo "Process found" || echo "Process not found"  ###################
+pgrep -x <process> >/dev/null && echo "Process found" || echo "Process not found"
 
 # pidof
 pidof <process> >/dev/null && echo "Service is running" || echo "Service NOT running"
@@ -43,3 +43,17 @@ xdg-settings set default-web-browser firefox.desktop
 xdg-settings set default-url-scheme-handler irc <app>
 
 $ xdg-settings: echo "--list get check set" | tr ' ' '\n'
+
+% logs
+
+# shows boot errors
+journalctl -b  -p err
+
+# shows journal messages logged within the last hour
+journalctl --since "1 hour ago"
+
+# shows messages logged within a specific time window
+journalctl --since "2015-06-26 23:15:00" --until "2015-06-26 23:20:00"
+
+# shows messages by unit
+journalctl -u nginx.service -u mysql.service

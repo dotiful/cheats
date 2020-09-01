@@ -12,10 +12,14 @@ kquitapp5 plasmashell && kstart5 plasmashell || pkill -ABRT plasmashell
 # Rebuilds the KService desktop file system configuration cache
 kbuildsycoca5
 
-# Reload Global Shortcuts config
+# reload shortcuts
+qdbus org.kde.keyboard /modules/khotkeys reread_configuration
+# reload global shortcuts config
 kquitapp5 kglobalaccel && sleep 2s && kglobalaccel5 & >/dev/null 2>&1
 
-# Restarting the KWin
+# reload kwin
+qdbus org.kde.KWin /KWin reconfigure
+# restart kwin
 killall kwin_x11 && kwin_x11 --replace & >/dev/null 2>&1
 
 # Hide/Show titlebars when maximized
@@ -27,6 +31,9 @@ qdbus org.kde.KWin /KWin supportInformation | bat -l rst
 
 # Set Kvantum theme
 kvantummanager --set <kvantum-themes>
+
+# restart krunner
+kquitapp5 krunner 2> /dev/null && kstart5 --windowclass krunner krunner > /dev/null 2>&1 &
 
 # Change Plasma Icon Theme
 /usr/lib/plasma-changeicons <icons_list>
@@ -48,8 +55,11 @@ qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.showInteractiveConsol
 # sync KDE places (folder bookmarks) to GTK 3
 awk -F\" '/<bookmark href=\"file/ {print $2}' < $HOME/.local/share/user-places.xbel > $HOME/.config/gtk-3.0/bookmarks
 
-# inhibit screen locking, power off, etc.
+# inhibit screen locking, power off, etc (plasma 5.20+)
 kde-inhibit --screensaver --power sleep 100
+
+# fix corrupted pulseaudio config
+sudo rm -r ~/.config/pulse && pulseaudio -k --start
 
 ; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = 32 - p.height;"
 ; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[1]); if (p.height > 0) {p.height = p.height * -1;}";

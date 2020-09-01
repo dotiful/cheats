@@ -1,5 +1,8 @@
 % gpg
 
+# reload the agent
+gpg-connect-agent reloadagent /bye
+
 # edit your key
 gpg --edit-key <key-id>
 
@@ -12,12 +15,6 @@ gpg --encrypt --sign --armor -r <encrypt-email> <encrypt-file>
 # decrypting fIles
 gpg --decrypt <decrypt-file-src> > <decrypt-file-dest>
 
-# keybase get the public key and import import it to gpg
-curl https://keybase.io/<keybase_username>/pgp_keys.asc | gpg --import
-
-# keybase get the latest PGP keys for username
-keybase pgp pull <keybase_username>
-
 # get default GPG key ID
 gpgconf --list-options gpg | awk -F: '$1 == "default-key" {print $10}' | tr -d \"
 
@@ -26,6 +23,13 @@ $ encrypt-email: echo "dots.util@gmail.com " | tr ' ' '\n'
 $ decrypt-file-src: exa --group-directories-first -a -I="$EXAIGNORE" | fzf -e -q asc
 $ decrypt-file-dest: basename -s .asc <decrypt-file-src>
 
+% keybase
+
+# keybase get the public key and import import it to gpg
+curl https://keybase.io/<keybase_username>/pgp_keys.asc | gpg --import
+
+# keybase get the latest PGP keys for username
+keybase pgp pull <keybase_username>
 
 # If you select "hello" for <x>, the possible values of <y> will be "hello foo" and "hello bar"
 ; echo <x> <y>

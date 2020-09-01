@@ -1,5 +1,7 @@
 % sh redirects
 
+; https://www.cyberciti.biz/faq/how-to-write-the-output-into-the-file-in-linux/
+
 # Write to file
 echo <Hello> > <hello-txt>
 

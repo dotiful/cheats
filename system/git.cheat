@@ -100,6 +100,16 @@ git submodule foreach git pull origin master
 # Update all submodules
 git submodule update --init --recursive
 
+# list all submodules
+git config --file .gitmodules --get-regexp path | awk '{ print $2 }'
+
+# list submodules paths
+grep path .gitmodules | sed 's/.*= //'
+
+# list submodules urls
+grep url .gitmodules | sed 's/.*= //'
+
+
 # Skip git hooks
 git commit --no-verify
 

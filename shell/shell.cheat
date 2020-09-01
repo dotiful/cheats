@@ -26,6 +26,21 @@ echo "2.3.3" | tr -d .
 # remove characters from a string/variable using sed
 echo "2.3.3" | sed 's/\.//g'
 
+# cutting all characters after the last slash /
+echo <string> | sed 's|.*/||'
+
+# cutting all characters before the last slash /
+echo <string> | sed 's|\(.*\)/.*|\1|'
+
+# cut before first space using cut
+| cut -d ' ' -f 1
+# cut before first space using sed
+| sed 's/  -//'
+# cut before first space using awk
+| awk '{print $1}'
+
+# indent output by tab-delimited columns
+cat <file> | column -t
 
 % sh usage
 
@@ -61,3 +76,11 @@ ps -ef | grep apache | grep -v grep
 
 # Change group
 chgrp <group-name-from> <group-name-to>
+
+; https://www.cyberciti.biz/faq/how-to-add-days-to-date-and-get-new-date-on-linux/
+
+# fix zsh corrupt history file
+mv "$HISTFILE" "${HISTFILE}_bad" \
+  && strings "${HISTFILE}_bad" > "$HISTFILE" \
+  && fc -R "$HISTFILE" \
+  && rm "${HISTFILE}_bad"
