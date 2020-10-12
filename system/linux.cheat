@@ -3,14 +3,26 @@
 # identify video card
 lspci | grep -e VGA -e 3D
 
+# find out how much ram memory has your video card
+lspci | grep -i "VGA Compatible Controller" | cut -d' ' -f1 | xargs lspci -v -s | grep ' prefetchable'
+
 # list USB devices
 lsusb
+
+# display information about the CPU
+lscpu | egrep 'Model name|Socket|Thread|NUMA|CPU\(s\)'
 
 # copy output to clipboard
 xclip -r -se c
 
 # paste clipboard content
 xclip -out -selection clipboard
+
+# disable a laptop internal keyboard
+xinput float <keyboard-id>
+# enable a laptop internal keyboard
+xinput reattach <keyboard-id> 2
+
 
 # pgrep
 pgrep -x <process> >/dev/null && echo "Process found" || echo "Process not found"
@@ -43,6 +55,8 @@ xdg-settings set default-web-browser firefox.desktop
 xdg-settings set default-url-scheme-handler irc <app>
 
 $ xdg-settings: echo "--list get check set" | tr ' ' '\n'
+
+$ keyboard-id: xinput list | awk -v s=$s 'index($0, s) {print $7}' | sed 's/id=//'
 
 % logs
 

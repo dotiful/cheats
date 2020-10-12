@@ -1,0 +1,27 @@
+% wine
+
+# wipe the virtual Windows installation
+rm -rf ${WINEPREFIX:-$HOME/.wine} \
+rm -f ~/.config/menus/applications-merged/wine* \
+rm -rf ~/.local/share/applications/wine \
+rm -f ~/.local/share/desktop-directories/wine* \
+rm -f ~/.local/share/icons/????_*.{xpm,png} \
+rm -f ~/.local/share/icons/*-x-wine-*.{xpm,png}
+
+# clean the Open With List
+rm -f ~/.local/share/mime/packages/x-wine* \
+rm -f ~/.local/share/applications/wine-extension* \
+rm -f ~/.local/share/icons/hicolor/*/*/application-x-wine-extension* \
+rm -f ~/.local/share/mime/application/x-wine-extension*
+
+# prevent Wine from changing the filetype associations or adding unwanted menu entries/desktop using reg file(winecfg)
+regedit disable-winemenubuilder.reg
+
+# prevent Wine from changing the filetype associations or adding unwanted menu entries/desktop using environment variable
+WINEDLLOVERRIDES=winemenubuilder.exe=d
+
+# disable the GUI crash dialog
+winetricks nocrashdialog
+
+# link all of the system fonts to the wine
+cd ${WINEPREFIX:-~/.wine}/drive_c/windows/Fonts && for i in /usr/share/fonts/**/*.{ttf,otf}; do ln -s "$i" ; done

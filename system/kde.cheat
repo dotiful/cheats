@@ -61,6 +61,9 @@ kde-inhibit --screensaver --power sleep 100
 # fix corrupted pulseaudio config
 sudo rm -r ~/.config/pulse && pulseaudio -k --start
 
+# change calendar first day to monday
+sudo sed -i 's/firstDayOfWeek: Qt.locale().firstDayOfWeek/firstDayOfWeek: 1/' /usr/lib/qt/qml/org/kde/plasma/calendar/MonthView.qml
+
 ; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = 32 - p.height;"
 ; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[1]); if (p.height > 0) {p.height = p.height * -1;}";
 ; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); if (p.hiding == 'autohide') {p.height = p.height * -1;}";
@@ -71,3 +74,17 @@ sudo rm -r ~/.config/pulse && pulseaudio -k --start
 ; xclip -o -selection clipboard | sed 's/^file:\/\///' | xclip -selection clipboard
 ; xclip -o -selection clipboard | sed -r "s/^file:\/\/(.*)/'\1'/" | xvkbd -xsendevent -file - 2>/dev/null
 ; bash -c 'xclip -o -selection clipboard | sed -r "s/^file:\/\/(.*)/'"'"'\1'"'"'/" | tee >( xvkbd -xsendevent -file - 2>/dev/null ) | xclip -selection clipboard'
+
+; qdbus org.kde.ksmserver /KSMServer logout <confirm> <shutdowntype> <shutdownmode>
+# reboot
+qdbus org.kde.ksmserver /KSMServer logout 0 1 1
+# forc reboot
+qdbus org.kde.ksmserver /KSMServer logout 0 1 2
+
+# logout with confirmation
+qdbus org.kde.ksmserver /KSMServer logout 1 3 3
+# logout without confirmation
+qdbus org.kde.ksmserver /KSMServer logout 0 3 3
+
+# halt
+qdbus org.kde.ksmserver /KSMServer logout 0 2 1

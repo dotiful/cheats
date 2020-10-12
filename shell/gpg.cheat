@@ -1,5 +1,8 @@
 % gpg
 
+# list secret keys
+gpg --list-secret-keys --keyid-format=LONG
+
 # reload the agent
 gpg-connect-agent reloadagent /bye
 

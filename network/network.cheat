@@ -22,6 +22,8 @@ ifconfig \
   | grep -v '127.0.0.1' \
   | tail -n1
 
-
 # Find external, public IP address
 dig +short myip.opendns.com @resolver1.opendns.com
+
+# download all files from a website
+wget -A <extensions> -m -p -E -k -K -np <url>

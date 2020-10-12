@@ -1,0 +1,75 @@
+% sh strings
+
+# https://linuxhint.com/read_filename_without_extension_bash/
+
+# converts string to lower case using tr
+tr '[:upper:]' '[:lower:]'
+# converts string to lower case using sed
+sed 's/./\L&/g'
+# converts string to lower case using bash
+echo ${name,,}
+# converts string to lower case using zsh
+echo ${name:l} || ${(L)name}
+
+# converts string to upper case using tr
+tr '[:lower:]' '[:upper:]'
+# converts string to upper case using sed
+sed 's/./\L&/g'
+# converts string to upper case using bash
+echo ${name^^}
+# converts string to upper case using zsh
+echo ${name:u} || ${(U)name}
+
+# capitalize
+echo "$(tr '[:lower:]' '[:upper:]' <<<"${1:0:1}")${1:1}"
+
+# remove characters from a string/variable using tr
+echo "2.3.3" | tr -d .
+
+# remove characters from a string/variable using sed
+echo "2.3.3" | sed 's/\.//g'
+
+# cutting all characters after the last slash /
+echo <string> | sed 's|.*/||'
+
+# cutting all characters before the last slash /
+echo <string> | sed 's|\(.*\)/.*|\1|'
+
+# cut before first space using cut
+| cut -d ' ' -f 1
+# cut before first space using sed
+| sed 's/  -//'
+
+# print first word
+| awk '{print $1}'
+
+# print last word
+grep -oE '[^ ]+$'
+
+# print string length
+| awk '{print length}'
+
+# indent output by tab-delimited columns
+cat <file> | column -t
+
+# print last paragraph line
+awk '(!NF) { exit } { print $0 }' | tail -n1
+
+# print reverse lines
+awk '{a[i++]=$0} END {for (j=i-1; j>=0;) print a[j--] }'
+
+# remove empty lines
+sed '/^$/d'
+
+# trim newlines
+tr -d "\n"
+
+# if string contains
+if [[ "${1}" == *"${2}"* ]]; then
+  return 0
+else
+  return 1
+fi
+
+# remove last char
+echo "${1:0:${#1}-1}"

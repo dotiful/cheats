@@ -5,3 +5,11 @@ sudo pacman -S $(pacman -Qq | grep python-)
 
 # update all pip packages
 pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+
+# list installed packages names only
+pip list --not-required --format freeze | awk -F '==' '{print $1}'
+
+# remove dependencies of a package
+for dep in $(pip show <pips> | grep Requires | sed 's/Requires: //g; s/,//g') ; do pip uninstall -y $dep ; done
+
+$ pips: pip list --not-required --format freeze | awk -F '==' '{print $1}'

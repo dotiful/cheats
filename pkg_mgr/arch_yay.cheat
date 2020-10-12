@@ -7,22 +7,36 @@ yay -S --noconfirm --needed
 
 # remove package
 yay -Rns --noconfirm <installed_packages>
-$ installed_packages: pacman -Qqe
 
-# packages from a list
+# remove package ignoring dependencies
+yay -Rd --nodeps --noconfirm <installed_packages>
+
+# install packages from a list
 yay -S --noconfirm --needed - < pkglist.txt
 
 # install skippping validity checks
 yay -S --noconfirm --needed --mflags --skipinteg
 
-# search/list installed packages with sizes
-LC_ALL=C yay -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h -r | fzf
-
 # list of installed packages
 yay -Qqe
 
+# list package information
+yay -Qi
+
+# list all installed packages with an instant preview
+yay -Qq | fzf --preview 'yay -Qil {}' --preview-window right --bind 'enter:execute(yay -Qil {} | less)'
+
+
 # save list of installed packages
 yay -Qqe > pkglist.txt
+
+# search/list installed packages with sizes
+LC_ALL=C yay -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h -r | fzf
+
+# removing unused packages (orphans)
+yay -Rns --noconfirm $(yay -Qtdq)
+
+$ installed_packages: yay -Qq
 
 % expac
 
@@ -34,11 +48,3 @@ expac --timefmt='%Y-%m-%d %T' '%l\\t%n' | sort | tail -n 20
 
 # list all installed packages unrequired by other packages, and which are not in the base meta package or base-devel package group
 expac -HM '%-20n\\t%10d' $(comm -23 <(pacman -Qqt | sort) <({ pacman -Qqg base-devel; expac -l '\\n' '%E' base; } | sort | uniq))
-
-% pacman
-
-# list the packages marked for upgrade with their download size
-pacman -Quq|xargs expac -S -H M '%k\\t%n' | sort -sh
-
-# removing unused packages (orphans)
-yay -Rns --noconfirm $(yay -Qtd)
