@@ -88,3 +88,6 @@ qdbus org.kde.ksmserver /KSMServer logout 0 3 3
 
 # halt
 qdbus org.kde.ksmserver /KSMServer logout 0 2 1
+
+# turn off monitor
+xset dpms force off
