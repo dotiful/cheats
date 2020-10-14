@@ -55,6 +55,11 @@ qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.showInteractiveConsol
 # sync KDE places (folder bookmarks) to GTK 3
 awk -F\" '/<bookmark href=\"file/ {print $2}' < $HOME/.local/share/user-places.xbel > $HOME/.config/gtk-3.0/bookmarks
 
+# lock session
+loginctl lock-session
+# lock session using qdbus
+qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock
+
 # inhibit screen locking, power off, etc (plasma 5.20+)
 kde-inhibit --screensaver --power sleep 100
 
@@ -91,3 +96,9 @@ qdbus org.kde.ksmserver /KSMServer logout 0 2 1
 
 # turn off monitor
 xset dpms force off
+
+# decrese brightness
+qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.setBrightness $(expr $(qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.brightness) - 50)
+
+# increse brightness
+qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.setBrightness $(expr $(qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.brightness) + 50)

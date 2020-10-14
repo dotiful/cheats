@@ -148,3 +148,8 @@ makepkg -s
 namcap
 
 $ pkg_name_installed: sudo pacman -Qe
+
+
+; wget -qO - 'https://www.archlinux.org/mirrorlist/?country=DE&country=NL&country=PL&country=UA&protocol=https&use_mirror_status=on' | sed -e 's/^#Server/Server/g' -e '/^#/d' | rankmirrors -n 20 - | sudo tee /etc/pacman.d/mirrorlist && yay -Syu pacman-mirrorlist
+; pacman-mirrors --country Germany,Poland,Ukraine,Netherlands,United_Kingdom,France,Austria --protocol https,http --fasttrack 7
+; pacman-mirrors --country Germany,Poland,Ukraine,Netherlands,United_Kingdom,France,Austria --protocol http --set-branch stable
