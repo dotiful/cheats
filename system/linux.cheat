@@ -61,7 +61,7 @@ $ keyboard-id: xinput list | awk -v s=$s 'index($0, s) {print $7}' | sed 's/id=/
 % logs
 
 # shows boot errors
-journalctl -b  -p err
+journalctl -b -p err
 
 # shows journal messages logged within the last hour
 journalctl --since "1 hour ago"

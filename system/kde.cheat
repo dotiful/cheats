@@ -83,7 +83,7 @@ sudo sed -i 's/firstDayOfWeek: Qt.locale().firstDayOfWeek/firstDayOfWeek: 1/' /u
 ; qdbus org.kde.ksmserver /KSMServer logout <confirm> <shutdowntype> <shutdownmode>
 # reboot
 qdbus org.kde.ksmserver /KSMServer logout 0 1 1
-# forc reboot
+# force reboot
 qdbus org.kde.ksmserver /KSMServer logout 0 1 2
 
 # logout with confirmation
@@ -99,6 +99,18 @@ xset dpms force off
 
 # decrese brightness
 qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.setBrightness $(expr $(qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.brightness) - 50)
-
 # increse brightness
 qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.setBrightness $(expr $(qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.brightness) + 50)
+# max brightness
+qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.setBrightness $(qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.brightnessMax)
+# min brightness
+qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.setBrightness 0
+
+# bluetooth on
+bluetoothctl power on
+# bluetooth off
+bluetoothctl power off
+# bluetooth connect a320
+bluetoothctl connect AB:AB:FA:2F:36:AB
+# bluetooth disconnect a320
+bluetoothctl disconnect AB:AB:FA:2F:36:AB

@@ -1,10 +1,25 @@
 % pip
 
+# install a package
+pip install -y --user <package>
+
+# install a specific version of a package
+pip install <package>==<version>
+
+# upgrade a package
+pip install -U <package>
+
+# uninstall a package
+pip uninstall -y <pips-installed>
+
 # reinstall all python-* packages
 sudo pacman -S $(pacman -Qq | grep python-)
 
 # update all pip packages
 pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+
+# list user installed packages
+pip list --user
 
 # list installed packages names only
 pip list --not-required --format freeze | awk -F '==' '{print $1}'
@@ -13,3 +28,4 @@ pip list --not-required --format freeze | awk -F '==' '{print $1}'
 for dep in $(pip show <pips> | grep Requires | sed 's/Requires: //g; s/,//g') ; do pip uninstall -y $dep ; done
 
 $ pips: pip list --not-required --format freeze | awk -F '==' '{print $1}'
+$ pips-installed: pip list --format freeze | awk -F '==' '{print $1}'
