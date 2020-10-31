@@ -114,3 +114,6 @@ bluetoothctl power off
 bluetoothctl connect AB:AB:FA:2F:36:AB
 # bluetooth disconnect a320
 bluetoothctl disconnect AB:AB:FA:2F:36:AB
+
+# sync keepassxc db to google drive
+kioclient5 cp ~/Documents/Passwords.kdbx gdrive:/artdevjs/apps/keepass/Passwords.kdbx

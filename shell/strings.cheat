@@ -58,11 +58,23 @@ awk '(!NF) { exit } { print $0 }' | tail -n1
 # print reverse lines
 awk '{a[i++]=$0} END {for (j=i-1; j>=0;) print a[j--] }'
 
+# awk adding color code to text
+echo "line 1 \\
+line 2" | awk '/line/ {print "\033[32m" $1 "\033[31m" $2 }'
+
 # remove empty lines
 sed '/^$/d'
 
 # trim newlines
 tr -d "\n"
+
+
+# extract file extension using sed
+echo <filename> | sed 's/^.*\.//'
+
+# extract file extension using awk
+echo <filename> | awk -F"." '{print $NF}'
+
 
 # if string contains
 if [[ "${1}" == *"${2}"* ]]; then
