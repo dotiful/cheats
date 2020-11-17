@@ -1,0 +1,99 @@
+# https://adbinstaller.com/commands
+
+% adb getprop
+
+# get android system properties info.
+adb shell getprop
+
+# get sdk api level.
+adb shell getprop ro.build.version.sdk
+
+# get android security patch version.
+adb shell getprop ro.build.version.security_patch
+
+# get soc info.
+adb shell getprop ro.board.platform
+
+# get android version info.
+adb shell getprop ro.build.version.release
+
+# get android device model.
+adb shell getprop ro.vendor.product.model
+
+# get android device manufacturer.
+adb shell getprop ro.product.manufacturer
+
+# get adb serial number.
+adb shell getprop ro.serialno
+
+# get oem unlock status.
+adb shell getprop ro.oem_unlock_supported
+
+# get android device build fingerprint.
+adb shell getprop ro.bootimage.build.fingerprint
+
+# get wifi mac address
+adb shell getprop ro.boot.wifimacaddr
+
+% adb settings
+
+# android settings provider (system namespace)
+adb shell settings list system
+
+# get current system volume level in android.
+adb shell settings get system volume_system
+
+# get current system notification sound in android.
+adb shell settings get system notification_sound
+
+ # android settings provider (secure namespace)
+adb shell settings list secure
+
+# find android device identifier(device id)
+adb shell settings get secure android_id
+
+# find bluetooth mac address in android.
+adb shell settings get secure bluetooth_address
+
+ # android settings provider (global namespace)
+adb shell settings list global
+
+# get current mobile data status in android.
+adb shell settings get global mobile_data
+
+# get current wifi status in android.
+adb shell settings get global wifi_on
+
+% adb wm
+
+# get screen physical density in android
+adb shell wm density
+
+# get screen physical size in android
+adb shell wm size
+
+% adb pm
+
+# get list of installed apps in android.
+adb shell pm list packages
+
+# system apps
+adb shell pm list packages -s
+
+# 3rd-party apps
+adb shell pm list packages -3
+
+# keyword filtering
+adb shell pm list packages <keywords>
+
+# get the apk path on the device's filesystem.
+adb shell pm path <package-name>
+
+% adb cat
+
+# CPU info
+adb shell cat /proc/cpuinfo
+
+# RAM info
+adb shell cat /proc/meminfo
+

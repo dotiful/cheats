@@ -6,14 +6,17 @@ df -h
 # Show disc space (inodes)
 df -i
 
-# Show disc space for current directory
+# Show size for current directory
 du -hs
 
 # deleting windows hibernate metadata
-mount -t ntfs-3g -o remove_hiberfile /dev/<NTFS_partition> /mnt
+sudo mount -t ntfs-3g -o remove_hiberfile /dev/<NTFS_partition> /mnt
 
 # fix damaged ntfs filesystems
 sudo ntfsfix /dev/<NTFS_partition>
+
+$ NTFS_partition: lsblk -r -o NAME,FSTYPE /dev/sda | awk '/ntfs/ {print $1}'
+
 
 ; # If you select "hello" for <x>, the possible values of <y> will be "hello foo" and "hello bar"
 ; echo <x> <y>
