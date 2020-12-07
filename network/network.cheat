@@ -1,27 +1,5 @@
 % network
 
-# Kill a process running on a given port
-lsof -i :<port> \
-   | awk '{l=$2} END {print l}' \
-   | xargs kill
-
-# List IP addresses connected on a given port
-netstat -tn 2>/dev/null \
-   | grep :<port> \
-   | awk '{print $5}' \
-   | cut -d: -f1 \
-   | sort \
-   | uniq -c \
-   | sort -nr \
-   | head
-
-# Find primary, local IP address
-ifconfig \
-  | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' \
-  | grep -Eo '([0-9]*\.){3}[0-9]*' \
-  | grep -v '127.0.0.1' \
-  | tail -n1
-
 # Find external, public IP address
 dig +short myip.opendns.com @resolver1.opendns.com
 
@@ -45,3 +23,57 @@ nmcli c down id <nm-active>
 
 $ nm-all: nmcli -t -f NAME c show
 $ nm-active: nmcli -t -f NAME c show --active
+
+% port
+# Kill a process running on a given port
+lsof -i :<port> \
+   | awk '{l=$2} END {print l}' \
+   | xargs kill
+
+# List IP addresses connected on a given port
+netstat -tn 2>/dev/null \
+   | grep :<port> \
+   | awk '{print $5}' \
+   | cut -d: -f1 \
+   | sort \
+   | uniq -c \
+   | sort -nr \
+   | head
+
+# Find primary, local IP address
+ifconfig \
+  | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' \
+  | grep -Eo '([0-9]*\.){3}[0-9]*' \
+  | grep -v '127.0.0.1' \
+  | tail -n1
+
+; https://www.cyberciti.biz/networking/nmap-command-examples-tutorials/
+15. How do I scan specific ports using nmap?
+
+nmap -p [port] hostName
+## Scan port 80
+nmap -p 80 192.168.1.1
+
+## Scan TCP port 80
+nmap -p T:80 192.168.1.1
+
+## Scan UDP port 53
+nmap -p U:53 192.168.1.1
+
+## Scan two ports ##
+nmap -p 80,443 192.168.1.1
+
+## Scan port ranges ##
+nmap -p 80-200 192.168.1.1
+
+## Combine all options ##
+nmap -p U:53,111,137,T:21-25,80,139,8080 192.168.1.1
+nmap -p U:53,111,137,T:21-25,80,139,8080 server1.cyberciti.biz
+nmap -v -sU -sT -p U:53,111,137,T:21-25,80,139,8080 192.168.1.254
+
+## Scan all ports with * wildcard ##
+nmap -p "*" 192.168.1.1
+
+## Scan top ports i.e. scan $number most common ports ##
+nmap --top-ports 5 192.168.1.1
+nmap --top-ports 10 192.168.1.1

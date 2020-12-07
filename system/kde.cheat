@@ -117,3 +117,6 @@ bluetoothctl disconnect AB:AB:FA:2F:36:AB
 
 # sync keepassxc db to google drive
 kioclient5 cp ~/Documents/Passwords.kdbx gdrive:/artdevjs/apps/keepass/Passwords.kdbx
+
+; KDEConnect uses a URL like "kdeconnect://runcommand?c=blahblahblah" and i want to run that url in the background without opening a web browser application in the foreground
+

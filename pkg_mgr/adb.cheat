@@ -74,20 +74,53 @@ adb shell wm size
 
 % adb pm
 
-# get list of installed apps in android.
+#  list of installed apps
 adb shell pm list packages
 
-# system apps
-adb shell pm list packages -s
+#  list of user running apps
+adb shell ps -A | grep u0_ | awk '{print $NF}'
 
-# 3rd-party apps
-adb shell pm list packages -3
+# list of system apps
+adb shell pm list packages -s | sed 's/package://g'
+
+# list of 3rd-party apps
+adb shell pm list packages -3 | sed 's/package://g'
+
+# list of enabled apps
+adb shell pm list packages -e | sed 's/package://g'
+
+# list of disabled apps
+adb shell pm list packages -d | sed 's/package://g'
+
+# start app
+adb shell monkey -p <adb-installed-apps> -c android.intent.category.LAUNCHER 1
+
+# kill user running app
+adb shell su -c 'killall <adb-running-apps>'
+
+# disable specific package
+adb shell pm disable-user --user 0 <adb-enabled-apps>
+
+# disable third-party app
+adb shell pm disable <adb-enabled-apps>
+
+# enable specific package
+adb shell pm enable <adb-disabled-apps>
+
+$ adb-enabled-apps: adb shell pm list packages -s | sed 's/package://g'
+$ adb-disabled-apps: adb shell pm list packages -d | sed 's/package://g'
+$ adb-installed-apps: adb shell pm list packages | sed 's/package://g'
+$ adb-running-apps: adb shell ps -A | grep u0_ | awk '{print $NF}'
+
+am start -n org.kde.kdeconnect_tp/.MainActivity
 
 # keyword filtering
 adb shell pm list packages <keywords>
 
 # get the apk path on the device's filesystem.
 adb shell pm path <package-name>
+
+adb shell pm uninstall <package-name>
 
 % adb cat
 
@@ -97,3 +130,5 @@ adb shell cat /proc/cpuinfo
 # RAM info
 adb shell cat /proc/meminfo
 
+# backup keepassxc db to google drive
+kioclient5 rm gdrive:/artdevjs/apps/keepass/Passwords.kdbx && kioclient5 cp ~/Documents/Passwords.kdbx gdrive:/artdevjs/apps/keepass/Passwords.kdbx

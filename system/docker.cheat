@@ -37,7 +37,10 @@ docker images -a
 # Remove the specified image from this machine
 docker rmi <imagename>
 
-# Remove all images from this machine
+# Remove all containers
+docker rm -f $(docker ps -a -q)
+
+# Remove all images
 docker rmi $(docker images -q)
 
 # Log in this CLI session using your Docker credentials
