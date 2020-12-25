@@ -42,7 +42,6 @@ $ kwin_borderless: $(kreadconfig5 --file ~/.config/kwinrc --group Windows --key 
 $ icons_list: /bin/ls -1 -d {/usr/share/icons,~/.local/share/icons}/*/ | sed 's/.$//' | awk -F"/" '{print $NF}'
 $ kvantum-themes: /bin/ls -1 -d {/usr/share/Kvantum,~/.config/Kvantum}/*/ | sed 's/.$//' | awk -F"/" '{print $NF}' --- --preview '(bat -pp --color=always {} || exa --group-directories-first --color=always -TL2 {}) 2>/dev/null | head -200' --preview-window right:50%
 
-
 # tell kdesu to use sudo instead of su
 kwriteconfig5 --file kdesurc --group super-user-command --key super-user-command sudo
 
@@ -63,24 +62,15 @@ qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock
 # inhibit screen locking, power off, etc (plasma 5.20+)
 kde-inhibit --screensaver --power sleep 100
 
-# fix corrupted pulseaudio config
+# fix corrupted pulseaudio config fix permissions
+sudo chown -R $USER ~/.config/pulse && pulseaudio -k --start
+
+# fix corrupted pulseaudio config remove cobfig
 sudo rm -r ~/.config/pulse && pulseaudio -k --start
 
 # change calendar first day to monday
 sudo sed -i 's/firstDayOfWeek: Qt.locale().firstDayOfWeek/firstDayOfWeek: 1/' /usr/lib/qt/qml/org/kde/plasma/calendar/MonthView.qml
 
-; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = 32 - p.height;"
-; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[1]); if (p.height > 0) {p.height = p.height * -1;}";
-; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); if (p.hiding == 'autohide') {p.height = p.height * -1;}";
-; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "print (panelById(panelIds[0]).hiding)"
-; p = panelById(panelIds[0]); p.hiding = 'autohide';
-; p = panelById(panelIds[0]); p.hiding = 'none';
-
-; xclip -o -selection clipboard | sed 's/^file:\/\///' | xclip -selection clipboard
-; xclip -o -selection clipboard | sed -r "s/^file:\/\/(.*)/'\1'/" | xvkbd -xsendevent -file - 2>/dev/null
-; bash -c 'xclip -o -selection clipboard | sed -r "s/^file:\/\/(.*)/'"'"'\1'"'"'/" | tee >( xvkbd -xsendevent -file - 2>/dev/null ) | xclip -selection clipboard'
-
-; qdbus org.kde.ksmserver /KSMServer logout <confirm> <shutdowntype> <shutdownmode>
 # reboot
 qdbus org.kde.ksmserver /KSMServer logout 0 1 1
 # force reboot
@@ -115,8 +105,20 @@ bluetoothctl connect AB:AB:FA:2F:36:AB
 # bluetooth disconnect a320
 bluetoothctl disconnect AB:AB:FA:2F:36:AB
 
-# sync keepassxc db to google drive
-kioclient5 cp ~/Documents/Passwords.kdbx gdrive:/artdevjs/apps/keepass/Passwords.kdbx
+# backup keepassxc db to google drive
+kioclient5 rm gdrive:/artdevjs/apps/keepass/Passwords.kdbx && kioclient5 cp ~/Documents/Passwords.kdbx gdrive:/artdevjs/apps/keepass/
 
-; KDEConnect uses a URL like "kdeconnect://runcommand?c=blahblahblah" and i want to run that url in the background without opening a web browser application in the foreground
 
+
+; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = 32 - p.height;"
+; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[1]); if (p.height > 0) {p.height = p.height * -1;}";
+; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); if (p.hiding == 'autohide') {p.height = p.height * -1;}";
+; qdbus org.kde.plasmashell /PlasmaShell evaluateScript "print (panelById(panelIds[0]).hiding)"
+; p = panelById(panelIds[0]); p.hiding = 'autohide';
+; p = panelById(panelIds[0]); p.hiding = 'none';
+
+; xclip -o -selection clipboard | sed 's/^file:\/\///' | xclip -selection clipboard
+; xclip -o -selection clipboard | sed -r "s/^file:\/\/(.*)/'\1'/" | xvkbd -xsendevent -file - 2>/dev/null
+; bash -c 'xclip -o -selection clipboard | sed -r "s/^file:\/\/(.*)/'"'"'\1'"'"'/" | tee >( xvkbd -xsendevent -file - 2>/dev/null ) | xclip -selection clipboard'
+
+; qdbus org.kde.ksmserver /KSMServer logout <confirm> <shutdowntype> <shutdownmode>

@@ -1,5 +1,12 @@
 % linux
 
+
+# clear ram memory cache
+sudo sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
+
+# pci device tree
+lspci -tv
+
 # identify video card
 lspci | grep -e VGA -e 3D
 
@@ -25,15 +32,6 @@ xinput reattach <keyboard-id> 2
 
 # detect new eSATA drives
 echo 0 0 0 | sudo tee /sys/class/scsi_host/host*/scan
-
-# pgrep
-pgrep -x <process> >/dev/null && echo "Process found" || echo "Process not found"
-
-# pidof
-pidof <process> >/dev/null && echo "Service is running" || echo "Service NOT running"
-
-# ps
-ps -C <process> >/dev/null && echo "Running" || echo "Not running"
 
 # get various settings from the desktop environment
 xdg-settings <xdg-settings>
@@ -61,6 +59,9 @@ $ xdg-settings: echo "--list get check set" | tr ' ' '\n'
 $ keyboard-id: xinput list | awk -v s=$s 'index($0, s) {print $7}' | sed 's/id=//'
 
 % logs
+
+# list the boots of the system
+journalctl --list-boots
 
 # shows boot errors
 journalctl -b -p err

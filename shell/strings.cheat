@@ -85,3 +85,6 @@ fi
 
 # remove last char
 echo "${1:0:${#1}-1}"
+
+# Convert JSON to YAML
+cat "<json_file>" | ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))'

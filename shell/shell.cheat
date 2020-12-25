@@ -10,7 +10,7 @@ $ chsh: echo -e "bash\nzsh"
 # Re-call last input with sudo
 sudo !!
 
-# Helpy
+# Help
 help cd / help dir (...)
 
 # Finding Help
@@ -18,15 +18,6 @@ apropos directory / apropos search (...)
 
 # Define custom startup screen
 sudo nano /etc/motd
-
-# Run a script as background process
-<process> &
-
-#List all running processes
-ps -A
-
-# Kill a running process
-killall <Process-name>
 
 % sh permissions
 
@@ -43,3 +34,20 @@ mv "$HISTFILE" "${HISTFILE}_bad" \
   && strings "${HISTFILE}_bad" > "$HISTFILE" \
   && fc -R "$HISTFILE" \
   && rm "${HISTFILE}_bad"
+
+% sh share
+
+# Create a QR code with the specified content
+echo "<content>" | curl -F-=\<- qrenco.de
+
+# Shorten a URL
+curl -s "http://tinyurl.com/api-create.php?url=<url>"
+
+# list binaries without the full paths from $PATH bash
+print -rC1 -- ${(ko)commands}
+
+# list all binaries from $PATH bash
+print -rC1 -- $commands
+
+# list all binaries from $PATH zsh
+whence -pm '*'

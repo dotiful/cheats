@@ -1,0 +1,7 @@
+% aliases
+
+# This is one command :: el
+echo lorem ipsum
+
+# This is another command :: ef
+echo foo bar

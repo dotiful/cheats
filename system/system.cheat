@@ -1,5 +1,14 @@
 % sh sys
 
+# Copy environment variable to clipboard
+echo "<env_var_value>" | xclip -r -se c
+
+# List path available commands
+which "<cmd>"
+
+$ cmd: bash -c "compgen -c"
+$ env_var_value: echo -e "variable@value\n$(env)" | sed 's/=/@/' | column -t -s'@' -c2 --- --column 2 --header-lines 1
+
 # Get the current hostname
 hostname
 
@@ -15,12 +24,52 @@ date
 # Exit terminal
 exit
 
-# Current processes (also CPS usage)
-top or htop
-
-# Show running php processes
-ps aux | grep php
-
 # Monitor error log (stream as file grows)
 tail error.log -f -n 0
 
+% process
+
+# Current processes (also CPS usage)
+top or htop
+
+# List all running processes
+ps -A
+
+# Show running php processes
+ps aux | grep <Process-name>
+
+# Run a script as background process
+<Process-name> &
+
+# Kill a running process
+killall <pnames>
+
+# Kill with signal 9
+sudo kill -9 <pid>
+
+# Kill with signal <n>
+sudo kill -<n> <pid>
+
+# Limit CPU usage to <n>%
+cpulimit --include-children --limit <n> --pid <pid>
+
+# Stop limiting CPU
+pkill -f cpulimit.*<pid>
+
+# Lower priority by <n>
+renice -n <n> -p <pid>
+
+# Unfreeze process
+kill -CONT <pid>
+
+# pgrep
+pgrep -x <Process-name> >/dev/null && echo "Process found" || echo "Process not found"
+
+# pidof
+pidof <Process-name> >/dev/null && echo "Service is running" || echo "Service NOT running"
+
+# ps
+ps -C <Process-name> >/dev/null && echo "Running" || echo "Not running"
+
+$ pid: (ps -o pid,%cpu,%mem,ni,cmd ax 2>/dev/null || ps -o pid,%cpu,%mem,ni,command) | sort -b -k3 -r | awk '{print $1, $2, $3, $4, $5}' | column -t
+$ pnames: ps -A -o comm=

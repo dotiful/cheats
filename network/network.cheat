@@ -1,10 +1,41 @@
 % network
 
-# Find external, public IP address
-dig +short myip.opendns.com @resolver1.opendns.com
-
 # download all files from a website
 wget -A <extensions> -m -p -E -k -K -np <url>
+
+# Kill a process running on a given port
+lsof -i :<port> \
+  | awk '{l=$2} END {print l}' \
+  | xargs kill
+
+# List IP addresses connected on a given port
+netstat -tn 2>/dev/null \
+  | grep :<port> \
+  | awk '{print $5}' \
+  | cut -d: -f1 \
+  | sort \
+  | uniq -c \
+  | sort -nr \
+  | head
+
+# Find primary, local IP address
+ifconfig \
+  | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' \
+  | grep -Eo '([0-9]*\.){3}[0-9]*' \
+  | grep -v '127.0.0.1' \
+  | tail -n1
+
+# find external/public IP
+dig +short myip.opendns.com @resolver1.opendns.com
+
+# find external/public IP
+curl icanhazip.com
+
+# Geolocation data for own IP
+curl -sL "https://get.geojs.io/v1/ip/geo/<self_global_ip>" | jq
+
+$ self_global_ip: dig +short myip.opendns.com @resolver1.opendns.com
+$ process: lsof -iTCP -sTCP:LISTEN -n -P | sed -E "s/:([0-9][0-9][0-9]+) /:$(tput setaf 3)\1$(tput sgr0) /g" --- --header-lines 1
 
 # list all NM connections
 nmcli con
@@ -24,31 +55,9 @@ nmcli c down id <nm-active>
 $ nm-all: nmcli -t -f NAME c show
 $ nm-active: nmcli -t -f NAME c show --active
 
-% port
-# Kill a process running on a given port
-lsof -i :<port> \
-   | awk '{l=$2} END {print l}' \
-   | xargs kill
-
-# List IP addresses connected on a given port
-netstat -tn 2>/dev/null \
-   | grep :<port> \
-   | awk '{print $5}' \
-   | cut -d: -f1 \
-   | sort \
-   | uniq -c \
-   | sort -nr \
-   | head
-
-# Find primary, local IP address
-ifconfig \
-  | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' \
-  | grep -Eo '([0-9]*\.){3}[0-9]*' \
-  | grep -v '127.0.0.1' \
-  | tail -n1
-
 ; https://www.cyberciti.biz/networking/nmap-command-examples-tutorials/
-15. How do I scan specific ports using nmap?
+; How do I scan specific ports using nmap?
+% port
 
 nmap -p [port] hostName
 ## Scan port 80

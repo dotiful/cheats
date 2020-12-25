@@ -1,0 +1,10 @@
+% apt
+
+# list all installed packages using dpkg-query
+dpkg-query -l
+
+# list all installed packages using dpkg
+dpkg -l |awk '/^[hi]i/{print $2}'
+
+# list all installed packages using apt
+sudo apt list --installed

@@ -9,6 +9,9 @@ df -i
 # Show size for current directory
 du -hs
 
+# Delete all broken symlinks in the current directory
+find -L . -name . -o -type d -prune -o -type l -exec rm {} +
+
 # deleting windows hibernate metadata
 sudo mount -t ntfs-3g -o remove_hiberfile /dev/<NTFS_partition> /mnt
 
