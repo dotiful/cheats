@@ -1,4 +1,4 @@
-% android, adb, device
+% adb
 
 ; https://adbinstaller.com/commands
 
@@ -9,7 +9,7 @@ adb -s "<devices>" shell getprop "<property>"
 adb -s "<devices>" install -r "<apk_path>"
 
 # Uninstall an APK
-adb -s "<devices>" uninstall "<adb-installed-apps>"
+adb uninstall "<adb-installed-apps>"
 
 # Uninstall .apk withour deleting data
 adb uninstall -k <apk_path>
@@ -19,6 +19,14 @@ adb -s "<devices>" shell pm clear "<package>"
 
 # Dispatch a deep-link
 adb -s "<devices>" shell am start "<uri>"
+
+# enable adb over wifi
+adb get-state 1>/dev/null 2>&1 \
+  && adb tcpip 5555 \
+  && ADBIP=$(adb shell "ip addr show wlan0 | grep -e wlan0$ | cut -d\" \" -f 6 | cut -d/ -f 1") \
+  && adb connect "$ADBIP:5555" \
+  && echo 'done, disconenct your device' \
+  || echo 'no device attached'
 
 $ devices: adb devices | tail -n +2 | cut -sf 1
 
@@ -33,11 +41,13 @@ sed -Ei "s/PasswordAuthentication.*/PasswordAuthentication false/g" "<sshd_confi
 
 $ ssh_config: echo "${PREFIX}/etc/ssh/sshd_config"
 
-
 % android, apps
 
 # Open Google Play Store profile page for an app
 dot browser google-lucky "<query> site:play.google.com"
+
+# increase maximum volume on mtk devices through engineer mode
+adb shell su -c 'am start -n com.mediatek.engineermode/.audio.AudioVolumePlayback'
 
 % adb settings
 
@@ -50,11 +60,6 @@ adb shell settings <adb-settings-cmd> <adb-settings-namespace> <adb-settings-glo
 $ adb-settings-namespace: echo "global system secure" | tr ' ' '\n'
 $ adb-settings-cmd: echo "get put delete" | tr ' ' '\n'
 $ adb-settings-global: adb shell settings list global | awk -F '=' '{print $1}'
-
-# If you select "hello" for <x>, the possible values of <y> will be "hello foo" and "hello bar"
-echo <adb-settings-namespace> <y>
-$ y: echo "$x foo;$x bar" | tr ';' '\n'
-
 
 # get current system volume level in android.
 adb shell settings get system volume_system
@@ -102,7 +107,7 @@ adb shell pm reset-permissions -p <adb-installed-apps>
 % adb pm
 
 #  list of installed apps
-adb shell pm list packages
+adb shell pm list packages | sed 's/package://g'
 
 #  list of user running apps
 adb shell ps -A | grep u0_ | awk '{print $NF}'
@@ -119,6 +124,12 @@ adb shell pm list packages -e | sed 's/package://g'
 # list of disabled apps
 adb shell pm list packages -d | sed 's/package://g'
 
+# list of app version
+adb shell dumpsys package <adb-installed-apps> | grep -E "(versionName|codePath)" | sed 's/^ *//'
+
+# list of all apps with version
+adb shell dumpsys package | awk '/^[ ]*Package \[.*\] (.*)/ { i = index($0, "[") + 1; pkg = substr($0, i, index($0, "]") - i); } /[ ]*versionName=/ { { print pkg "\t" substr($0, index($0, "=") + 1); pkg = ""; } }'
+
 # list of activity
 adb shell dumpsys activity
 
@@ -126,7 +137,13 @@ adb shell dumpsys activity
 adb shell monkey -p <adb-installed-apps> -c android.intent.category.LAUNCHER 1
 
 # kill user running app
+adb shell am kill <adb-running-apps>
+
+# kill user running app as sudo
 adb shell su -c 'killall <adb-running-apps>'
+
+# force stop everything associated with app
+adb shell am force-stop <adb-running-apps>
 
 # disable specific package
 adb shell pm disable-user --user 0 <adb-enabled-apps>
@@ -169,6 +186,10 @@ adb shell input keyevent 4
 adb shell input keyevent 5
 # end call
 adb shell input keyevent 6
+# volume up
+adb shell input keyevent 24
+# volume down
+adb shell input keyevent 25
 # turn android device on and off. it will toggle device to on/off status.
 adb shell input keyevent 26
 # camera
@@ -187,6 +208,9 @@ adb shell input keyevent 220/221
 adb shell input keyevent 277/278/279
 
 % adb getprop
+
+# get android version of connected device
+adb shell getprop ro.build.version.release
 
 # get ARM processor version
 adb shell getprop ro.product.cpu.abilist
@@ -224,7 +248,5 @@ adb shell getprop ro.bootimage.build.fingerprint
 # get wifi mac address
 adb shell getprop ro.boot.wifimacaddr
 
-% adb activity
-
-# increase maximum volume on mtk devices through engineer mode
-adb shell su -c 'am start -n com.mediatek.engineermode/.audio.AudioVolumePlayback'
+# get wifi ip address
+adb shell "ip addr show wlan0 | grep -e wlan0$ | cut -d\" \" -f 6 | cut -d/ -f 1"

@@ -1,10 +1,75 @@
-% apt
+% pkgs dpkg
 
 # list all installed packages using dpkg-query
 dpkg-query -l
 
 # list all installed packages using dpkg
-dpkg -l |awk '/^[hi]i/{print $2}'
+dpkg -l | awk '/^[hi]i/{print $2}'
+
+% pkgs apt
 
 # list all installed packages using apt
-sudo apt list --installed
+apt list --installed
+
+# installs a package
+apt install -y
+
+# removes a package
+apt remove -y
+
+# removes package with configuration
+apt purge -y
+
+# refreshes repository index
+apt update -y
+
+# upgrades all upgradable packages
+apt upgrade -y
+
+# removes unwanted packages
+apt autoremove -y
+
+# upgrades packages with auto-handling of dependencies
+apt full-upgrade
+
+# searches for the program
+apt search
+
+# shows package details
+apt show
+
+% pkgs apt-get
+
+# list table of available apt updates
+apt-get -V -s dist-upgrade \
+  | grep -E "^   .*=>.*" \
+  | awk 'BEGIN {
+      ul=sprintf("%*s",40,""); gsub(/ /,"⎯",ul);
+      printf "%-30s %-30s %-30s\n", "Package", "Installed", "Available";
+      printf "%-30.30s %-30.30s %-30.30s\n", ul, ul, ul;
+   }
+   {
+      printf "%-30s %-30s %-30s\n",
+             $1,
+             substr($2,2),
+             substr($4,1,length($4)-1)
+   }'
+
+# list available apt updates
+apt-get --dry-run dist-upgrade | awk '
+  BEGIN{p=0}
+  /^The/ {p=1;}
+  /no longer required/ {p=0}
+  #optional: /been kept back/ {p=0}
+  p && t {print t;t=""}
+  /^  / && p {print $0}
+'
+
+# upgrades packages with auto-handling of dependencies
+apt-get dist-upgrade
+
+# searches for the program
+apt-cache search
+
+# shows package details
+apt-cache show

@@ -1,3 +1,12 @@
+% network, httpie
+
+# make a request to a typicode microservice
+http -v <method> "https://<service>.typicode.com/<endpoint>" <http-body>
+
+$ method: echo -e 'GET\nPOST\nPUT'
+$ service: echo -e 'jsonplaceholder\nanotherservice'
+$ endpoint: case "${service}:${method}" in; "jsonplaceholder:post") echo -e 'e1\ne2\ne3';; esac
+
 % network
 
 # download all files from a website
@@ -25,6 +34,12 @@ ifconfig \
   | grep -v '127.0.0.1' \
   | tail -n1
 
+# returns default network interface name
+ip route show default | awk '/default/ {print $5}'
+
+# get MAC address of default network interface
+cat /sys/class/net/$(ip route show default | awk '/default/ {print $5}')/address | cut -d ' ' -f 1
+
 # find external/public IP
 dig +short myip.opendns.com @resolver1.opendns.com
 
@@ -36,6 +51,9 @@ curl -sL "https://get.geojs.io/v1/ip/geo/<self_global_ip>" | jq
 
 $ self_global_ip: dig +short myip.opendns.com @resolver1.opendns.com
 $ process: lsof -iTCP -sTCP:LISTEN -n -P | sed -E "s/:([0-9][0-9][0-9]+) /:$(tput setaf 3)\1$(tput sgr0) /g" --- --header-lines 1
+
+# get hostname from IP
+getent hosts <IP> | awk '{print $2}'
 
 # list all NM connections
 nmcli con
@@ -55,9 +73,16 @@ nmcli c down id <nm-active>
 $ nm-all: nmcli -t -f NAME c show
 $ nm-active: nmcli -t -f NAME c show --active
 
+# get the mac address vendor
+curl -w '\n' "https://api.macaddress.io/v1?apiKey=$MAC_ADDRESS_IO_API_KEY&search=$(getmac)"
+
 ; https://www.cyberciti.biz/networking/nmap-command-examples-tutorials/
 ; How do I scan specific ports using nmap?
 % port
+
+# find out which ports are opened
+nc -v -z -n -w 1 <host> <ports>
+$ ports: echo "ssh ftp sftp smtp 22 80 143 443" | tr ' ' '\n'
 
 nmap -p [port] hostName
 ## Scan port 80
@@ -86,3 +111,4 @@ nmap -p "*" 192.168.1.1
 ## Scan top ports i.e. scan $number most common ports ##
 nmap --top-ports 5 192.168.1.1
 nmap --top-ports 10 192.168.1.1
+

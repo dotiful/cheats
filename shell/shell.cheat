@@ -51,3 +51,9 @@ print -rC1 -- $commands
 
 # list all binaries from $PATH zsh
 whence -pm '*'
+
+# remove duplicate entries in $PATH
+export PATH=`echo -n $PATH | awk -v RS=":" '{ if (!x[$0]++) {printf s $0; s=":"} }'`
+
+ # Show amigable path
+echo $PATH | tr ":" "\n"

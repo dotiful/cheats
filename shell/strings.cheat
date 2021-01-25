@@ -40,6 +40,9 @@ echo <string> | sed 's|\(.*\)/.*|\1|'
 # cut before first space using sed
 | sed 's/  -//'
 
+# removing all spaces from the beginning of lines
+| sed 's/^ *//'
+
 # print first word
 | awk '{print $1}'
 
@@ -88,3 +91,6 @@ echo "${1:0:${#1}-1}"
 
 # Convert JSON to YAML
 cat "<json_file>" | ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))'
+
+# random string from provided characters with desired length
+randomString=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 8 ; echo ''); echo $randomString

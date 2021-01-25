@@ -9,6 +9,9 @@ sudo pacman -S --overwrite "*" python-<package>
 # Install a package(s) by name
 sudo pacman -S <pkg_name>
 
+# install all optional dependencies (as dependencies)
+sudo pacman -S --asdeps --needed $(pacman -Si <pkg_name> | sed -n '/^Opt/,/^Conf/p' | sed '$d' | sed 's/^Opt.*://g' | sed 's/^\s*//g' | tr '\n' ' ')
+
 # Remove a package(s) by name
 sudo pacman -Rs <pkg_name_installed>
 
@@ -124,7 +127,7 @@ lddd # from devtools
 sudo pacman -Qp <pkg_name>
 
 # List the contents of a package file
-sudo pacman -Qpl <pkg_name>
+sudo pacman -Qpl <pkg_name_installed>
 
 # Install local package file
 sudo pacman -U <pkg_file>
@@ -147,7 +150,7 @@ makepkg -s
 # Check for possible packaging issues
 namcap
 
-$ pkg_name_installed: sudo pacman -Qe
+$ pkg_name_installed: sudo pacman -Qq
 
 
 ; wget -qO - 'https://www.archlinux.org/mirrorlist/?country=DE&country=NL&country=PL&country=UA&protocol=https&use_mirror_status=on' | sed -e 's/^#Server/Server/g' -e '/^#/d' | rankmirrors -n 20 - | sudo tee /etc/pacman.d/mirrorlist && yay -Syu pacman-mirrorlist
