@@ -1,0 +1,48 @@
+% network, iw
+
+# get wireless interfaces names and their current mode
+iw dev
+
+# getting link status
+iw dev wlan0 link
+
+# scanning for available access points
+iw dev wlan0 scan
+
+# setting the operation mode to ad-hoc
+iw dev wlan0 set type ibss
+
+# connecting to open network
+iw dev wlan0 connect your_essid
+
+# connecting to open network specifying channel
+iw dev wlan0 connect your_essid 2432
+
+# connecting to wep encrypted network using hexadecimal key
+iw dev wlan0 connect your_essid key 0:your_key
+
+# enabling power save
+iw dev wlan0 set power_save on
+
+% network, wireless_tools
+
+# getting link status
+iwconfig wlan0
+
+# scanning for available access points
+iwlist wlan0 scan
+
+# setting the operation mode to ad-hoc
+iwconfig wlan0 mode ad-hoc
+
+# connecting to open network
+iwconfig wlan0 essid your_essid
+
+# connecting to open network specifying channel
+iwconfig wlan0 essid your_essid freq 2432M
+
+# connecting to wep encrypted network using hexadecimal key
+iwconfig wlan0 essid your_essid key your_key
+
+# enabling power save
+iwconfig wlan0 power on

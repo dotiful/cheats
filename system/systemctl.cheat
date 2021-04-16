@@ -30,6 +30,10 @@ systemctl list-unit-files --type=service --state=enabled
 # List disabled services
 systemctl list-unit-files --type=service --state=disabled
 
+# remove missing units
+systemctl reset-failed
+
+$ service_list: systemctl -t service --state=active --no-pager --no-legend | awk '{print $1}'
 $ service_inactive: systemctl list-units --type=service --state=inactive | awk '{print $1}' | grep .service | sed 's/.service$//'
 $ service_active: systemctl list-units --type=service --state=active | awk '{print $1}' | grep .service | sed 's/.service$//'
 $ service_enabled: systemctl list-unit-files --type=service --state=enabled | awk '{print $1}' | grep .service | sed 's/.service$//'

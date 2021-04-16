@@ -6,8 +6,11 @@
 ; # kde write config
 ; # kwriteconfig5 --file konsolerc --group "Desktop Entry" --key DefaultProfile
 
-# Restarting the KDE desktop
-kquitapp5 plasmashell && kstart5 plasmashell || pkill -ABRT plasmashell
+# Restarting Plasma
+kquitapp5 plasmashell && kstart5 plasmashell --windowclass plasmashell --window Desktop || pkill -ABRT plasmashell
+
+# Restarting Plasma ignoring output
+killall plasmashell && plasmashell > /dev/null 2>&1 & disown
 
 # Rebuilds the KService desktop file system configuration cache
 kbuildsycoca5
@@ -107,6 +110,12 @@ bluetoothctl disconnect AB:AB:FA:2F:36:AB
 
 # backup keepassxc db to google drive
 kioclient5 rm gdrive:/artdevjs/apps/keepass/Passwords.kdbx && kioclient5 cp ~/Documents/Passwords.kdbx gdrive:/artdevjs/apps/keepass/
+
+# show the manjaro release level (but you could still have more updates beyond that)
+lsb_release -a
+
+show manjaro release and candidate history
+awk -F'[][()]' '/manjaro-release/{ printf("%-25s %s\n", $2, $6); }' /var/log/pacman.log
 
 
 

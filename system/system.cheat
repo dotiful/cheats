@@ -12,7 +12,7 @@ $ env_var_value: echo -e "variable@value\n$(env)" | sed 's/=/@/' | column -t -s'
 # Get the current hostname
 hostname
 
-# Get the current users
+# print logged in users
 users
 
 # Show calendar

@@ -30,6 +30,12 @@ xinput float <keyboard-id>
 # enable a laptop internal keyboard
 xinput reattach <keyboard-id> 2
 
+# Get Current Active Window ID
+xprop -root _NET_ACTIVE_WINDOW | sed 's/.* //'
+
+# Get Window Class by clicking on the desired one.
+xprop WM_CLASS | grep -P -o '(?<=")[^"]+(?=")' | head -n 1
+
 # detect new eSATA drives
 echo 0 0 0 | sudo tee /sys/class/scsi_host/host*/scan
 
@@ -55,10 +61,12 @@ xdg-settings set default-web-browser firefox.desktop
 xdg-settings set default-url-scheme-handler irc <app>
 
 $ xdg-settings: echo "--list get check set" | tr ' ' '\n'
-
 $ keyboard-id: xinput list | awk -v s=$s 'index($0, s) {print $7}' | sed 's/id=//'
 
 % logs
+
+# filter output by message priorities or priority ranges
+journalctl -p <jrnl_filters>
 
 # list the boots of the system
 journalctl --list-boots
@@ -73,13 +81,16 @@ journalctl --since "1 hour ago"
 journalctl --since "2015-06-26 23:15:00" --until "2015-06-26 23:20:00"
 
 # shows messages by unit
-journalctl -u nginx.service -u mysql.service
+journalctl -u <services>
 
 # clear journalctl logs, retain only the past two days
 journalctl --vacuum-time=2d
 
 # clear journalctl logs, retain only the past 500 mb
 journalctl --vacuum-size=500M
+
+$ jrnl_filters: echo "err warning alert emerg crit notice debug info" | tr ' ' '\n'
+$ services: systemctl list-units --type=service --all | awk '{print $1}' | grep .service | sed 's/.service$//'
 
 % group management
 
@@ -107,7 +118,33 @@ groupdel group
 # to remove users from a group:
 gpasswd -d user group
 
-% wm
+% linux, kernel module
 
-# Get Current Active Window ID
-xprop -root _NET_ACTIVE_WINDOW | sed 's/.* //'
+# list currently loaded kernel modules
+lsmod
+
+# load a module
+modprobe <loaded_modules>
+
+# unload a module
+modprobe -r <loaded_modules>
+
+# show information about a module
+modinfo <loaded_modules>
+
+# list the options that are set for a loaded module
+systool -v -m <loaded_modules>
+
+# display the comprehensive configuration of all the modules
+modprobe -c | less
+
+# display the configuration of a particular module
+modprobe -c | grep <loaded_modules>
+
+# list the dependencies of a module (or alias), including the module itself
+modprobe --show-depends <loaded_modules>
+
+# list out all automatically detected modules
+mkinitcpio -M
+
+$ loaded_modules: lsmod | awk '{print $1}'

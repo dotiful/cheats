@@ -29,3 +29,6 @@ for dep in $(pip show <pips> | grep Requires | sed 's/Requires: //g; s/,//g') ; 
 
 $ pips: pip list --not-required --format freeze | awk -F '==' '{print $1}'
 $ pips-installed: pip list --format freeze | awk -F '==' '{print $1}'
+
+# install specific pip version
+wget -qO- https://bootstrap.pypa.io/get-pip.py | sudo python3.6

@@ -1,4 +1,5 @@
 % pacman
+; https://wiki.archlinux.org/index.php/Pacman/Rosetta
 
 # list the packages marked for upgrade with their download size
 pacman -Quq | xargs expac -S -H M '%k\\t%n' | sort -sh

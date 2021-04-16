@@ -1,0 +1,14 @@
+% hack
+
+# switch Wi-Fi card to monitor mode
+sudo ip link set <winterfaces> down && \
+  sudo iw <winterfaces> set monitor control && \
+  sudo ip link set <winterfaces> up
+
+# switch Wi-Fi card to managed mode
+sudo ip link set <winterfaces> down
+sudo iw <winterfaces> set type managed
+sudo ip link set <winterfaces> up
+
+$ interfaces: ip -o link show | awk -F': ' '{print $2}' | grep -v -E '^lo$'
+$ winterfaces: iw dev | grep -i "Interface " | awk '{print $NF}'

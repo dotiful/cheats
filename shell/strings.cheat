@@ -1,6 +1,7 @@
 % sh strings
 
 # https://linuxhint.com/read_filename_without_extension_bash/
+# https://www.cyberciti.biz/faq/unix-linux-replace-string-words-in-many-files/
 
 # converts string to lower case using tr
 tr '[:upper:]' '[:lower:]'

@@ -1,3 +1,5 @@
+; https://www.cyberciti.biz/faq/see-check-if-bash-variable-defined-in-script-on-linux-unix-macos/
+
 % sh vars
 
 # Register variable
@@ -10,3 +12,21 @@ echo $<Variable>
 unset <Variable>
 
 $ Variable: compgen -e | fzf -e --no-preview
+
+# if a bash variable is set or not
+[[ ! -z ${<var>+z} ]] && echo "Set" || echo "Not defined"
+
+# find out if a bash variable is defined
+[ -z ${<var>+y} ] && echo "\$<var> not defined"
+
+# first argument
+!^
+
+# all arguments
+!*
+
+# second through last arguments
+!:2-$
+
+# second through fourth arguments
+!:2-4

@@ -1,5 +1,8 @@
 % network, httpie
 
+# get network interfaces names
+ifconfig -s -a | awk '$1 !~ /Iface/ {print $1}'
+
 # make a request to a typicode microservice
 http -v <method> "https://<service>.typicode.com/<endpoint>" <http-body>
 
