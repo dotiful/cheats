@@ -114,6 +114,9 @@ kioclient5 rm gdrive:/artdevjs/apps/keepass/Passwords.kdbx && kioclient5 cp ~/Do
 # show the manjaro release level (but you could still have more updates beyond that)
 lsb_release -a
 
+# change panel height
+qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "panels()[0].height = 64"
+
 show manjaro release and candidate history
 awk -F'[][()]' '/manjaro-release/{ printf("%-25s %s\n", $2, $6); }' /var/log/pacman.log
 

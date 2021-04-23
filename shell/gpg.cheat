@@ -1,6 +1,10 @@
 ; https://ctlos.github.io/wiki/other/gnupg
+; http://irtfweb.ifa.hawaii.edu/~lockhart/gpg/
 
 % gpg
+
+# create a key
+gpg --gen-key
 
 # list secret keys
 gpg --list-secret-keys --keyid-format=LONG

@@ -21,7 +21,10 @@ yay -S --noconfirm --needed --mflags --skipinteg
 yay -Qqe
 
 # list package information
-yay -Qi
+yay -Qi <installed_packages>
+
+# display files provided by package
+yay -Ql <installed_packages> | cut -d " " -f 2
 
 # list all installed packages with an instant preview
 yay -Qq | fzf --preview 'yay -Qil {}' --preview-window right --bind 'enter:execute(yay -Qil {} | less)'

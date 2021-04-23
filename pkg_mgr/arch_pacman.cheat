@@ -8,19 +8,19 @@ pacman -Quq | xargs expac -S -H M '%k\\t%n' | sort -sh
 sudo pacman -S --overwrite "*" python-<package>
 
 # Install a package(s) by name
-sudo pacman -S <pkg_name>
+sudo pacman -S <all_packages>
 
 # install all optional dependencies (as dependencies)
 sudo pacman -S --asdeps --needed $(pacman -Si <pkg_name> | sed -n '/^Opt/,/^Conf/p' | sed '$d' | sed 's/^Opt.*://g' | sed 's/^\s*//g' | tr '\n' ' ')
 
 # Remove a package(s) by name
-sudo pacman -Rs <pkg_name_installed>
+sudo pacman -Rs <installed_packages>
 
 # Search for package(s)
 sudo pacman -Ss <keyword>
 
 # Upgrade Packages
-sudo pacman -Syu <pkg_name>
+sudo pacman -Syu <installed_packages>
 
 # Clean up all local caches
 sudo pacman -Sc
@@ -50,10 +50,13 @@ sudo less /var/log/pacman.log
 sudo pacman -Si <pkg_name>
 
 # Display local package information
-sudo pacman -Qi <pkg_name>
+sudo pacman -Qi <installed_packages>
+
+# Display files provided by package
+sudo pacman -Slq | fzf --preview 'pacman -Ql {} | cut -d " " -f 2'
 
 # Display files provided by local package
-sudo pacman -Ql <pkg_name>
+sudo pacman -Ql <installed_packages>
 
 # Display files provided by a remote package
 sudo pacman -Fl <pkg_name>
@@ -71,7 +74,7 @@ sudo pacman -Qc <pkg_name>
 sudo pacman -Qu
 
 # Display a list of all packages in all installation sources that are handled by the packages management
-sudo pacman -Sl
+sudo pacman -Slq
 
 # Generates a list of installed packages
 sudo pacman -Q
@@ -92,10 +95,10 @@ sudo pacman -Qe
 sudo pacman -Qd
 
 # Display packages which require X to be installed
-sudo pacman -Sii <pkg_name>
+sudo pacman -Sii <all_packages>
 
 # List all packages which are required for the given package
-sudo pacman -Qi <pkg_name>
+sudo pacman -Qi <all_packages>
 
 # Installation sources management
 sudo $EDITOR /etc/pacman.conf
@@ -128,7 +131,7 @@ lddd # from devtools
 sudo pacman -Qp <pkg_name>
 
 # List the contents of a package file
-sudo pacman -Qpl <pkg_name_installed>
+sudo pacman -Qpl <installed_packages>
 
 # Install local package file
 sudo pacman -U <pkg_file>
@@ -151,7 +154,8 @@ makepkg -s
 # Check for possible packaging issues
 namcap
 
-$ pkg_name_installed: sudo pacman -Qq
+$ all_packages: sudo pacman -Slq
+$ installed_packages: sudo pacman -Qq
 
 
 ; wget -qO - 'https://www.archlinux.org/mirrorlist/?country=DE&country=NL&country=PL&country=UA&protocol=https&use_mirror_status=on' | sed -e 's/^#Server/Server/g' -e '/^#/d' | rankmirrors -n 20 - | sudo tee /etc/pacman.d/mirrorlist && yay -Syu pacman-mirrorlist
